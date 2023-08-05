@@ -2,7 +2,7 @@
 
 ## Introduction
 
-We often find some PDF files do not have a table of content (TOC), which makes it inconvenient for us to read the file, especially for books. I build this tool to help you to generate one TOC. To do this, you need:
+We often find some PDF files do not have a table of contents (TOC), which makes it inconvenient for us to read the file, especially for books. I build this tool to help you to generate one TOC. To do this, you need:
 
 1. a PDF file.
 2. a TOC file (.txt), containing the TOC information in such a format:
