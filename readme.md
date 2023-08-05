@@ -36,7 +36,7 @@ Go to the folder containing main.py, run
 python main.py
 ```
 
-A window will show
+A window will show:
 <img src="./screenshot/main_window.png" alt="alt text" style="width:50%;">
 
 You can run test:
