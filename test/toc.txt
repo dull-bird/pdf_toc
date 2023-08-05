@@ -1,0 +1,165 @@
+1 Foundations 1 
+1.1 Principles of Monte Carlo 1 
+1.1.1 Introduction 1 
+1.1.2 First Examples 3 
+1.1.3 Efficiency of Simulation Estimators 9 
+1.2 Principles of Derivatives Pricing 19 
+1.2.1 Pricing and Replication 21 
+1.2.2 Arbitrage and Risk-Neutral Pricing 25 
+1.2.3 Change of Numeraire 32 
+1.2.4 The Market Price bf Risk 36 
+2 Generating Random Numbers and Random Variables 39 
+2.1 Random Number Generation 39 
+2.1.1 General Considerations 39 
+2.1.2 Linear Congruential Generators 43 
+2.1.3 Implementation of Linear Congruential Generators 44 
+2.1.4 Lattice Structure 47 
+2.1.5 Combined Generators and Other Methods 49 
+2.2 General Sampling Methods 53 
+2.2.1 Inverse Transform Method 54 
+2.2.2 Acceptance-Rejection Method 58 
+2.3 Normal Random Variables and Vectors 63 
+2.3.1 Basic Properties 63 
+2.3.2 Generating Univariate Normals 65 
+2.3.3 Generating Multivariate Normals 71 
+3 Generating Sample Paths 79 
+3.1 Brownian Motion 79 
+3.1.1 One Dimension 79 
+3.1.2 Multiple Dimensions 90 
+3.2 Geometric Brownian Motion 93
+3.2.1 Basic Properties 93 
+3.2.2 Path-Dependent Options 96 
+3.2.3 Multiple Dimensions 104 
+3.3 Gaussian Short Rate Models 108 
+3.3.1 Basic Models and Simulation 108 
+3.3.2 Bond Prices 111 
+3.3.3 Multifactor Models 118 
+3.4 Square-Root Diffusions 120 
+3.4.1 Transition Density 121 
+3.4.2 Sampling Gamma and Poisson 125 
+3.4.3 Bond Prices 128 
+3.4.4 Extensions 131 
+3.5 Processes with Jumps 134 
+3.5.1 A Jump-Diffusion Model 134 
+3.5.2 Pure-Jump Processes 142 
+3.6 Forward Rate Models: Continuous Rates 149 
+3.6.1 The HJM Framework 150 
+3.6.2 The Discrete Drift 155 
+3.6.3 Implementation 160 
+3.7 Forward Rate Models: Simple Rates 165 
+3.7.1 LIBOR Market Model Dynamics 166 
+3.7.2 Pricing Derivatives 172 
+3.7.3 Simulation 174 
+3.7.4 Volatility Structure and Calibration 180
+4 Variance Reduction Techniques 185 
+4.1 Control Variates 185 
+4.1.1 Method and Examples 185 
+4.1.2 Multiple Controls 196 
+4.1.3 Small-Sample Issues 200 
+4.1.4 Nonlinear Controls 202 
+4.2 Antithetic Variates 205 
+4.3 Stratified Sampling 209 
+4.3.1 Method and Examples 209 
+4.3.2 Applications 220 
+4.3.3 Poststratification 232 
+4.4 Latin Hypercube Sampling 236 
+4.5 Matching Underlying Assets 243 
+4.5.1 Moment Matching Through Path Adjustments 244 
+4.5.2 Weighted Monte Carlo 251 
+4.6 Importance Sampling 255 
+4.6.1 Principles and First Examples 255 
+4.6.2 Path-Dependent Options 267 
+4.7 Concluding Remarks 276
+5 Quasi-Monte Carlo 281 
+5.1 General Principles 281 
+5.1.1 Discrepancy 283 
+5.1.2 Van der Corput Sequences 285 
+5.1.3 The Koksma-Hlawka Bound 287 
+5.1.4 Nets and Sequences 290 
+5.2 Low-Discrepancy Sequences 293 
+5.2.1 Halton and Hammersley 293 
+5.2.2 Faure 297 
+5.2.3 Sobol' 303 
+5.2.4 Further Constructions 314 
+5.3 Lattice Rules 316 
+5.4 Randomized QMC 320 
+5.5 The Finance Setting 323 
+5.5.1 Numerical Examples 323 
+5.5.2 Strategic Implementation 331 
+5.6 Concluding Remarks 335 
+6 Discretization Methods 339 
+6.1 Introduction 339 
+6.1.1 The Euler Scheme and a First Refinement 339 
+6.1.2 Convergence Order 344 
+6.2 Second-Order Methods 348 
+6.2.1 The Scalar Case 348 
+6.2.2 The Vector Case 351 
+6.2.3 Incorporating Path-Dependence 357 
+6.2.4 Extrapolation 360 
+6.3 Extensions 362 
+6.3.1 General Expansions 362 
+6.3.2 Jump-Diffusion Processes 363 
+6.3.3 Convergence of Mean Square Error 365 
+6.4 Extremes and Barrier Crossings: Brownian Interpolation 366 
+6.5 Changing Variables 371 
+6.6 Concluding Remarks 375 
+7 Estimating Sensitivities 377 
+7.1 Finite-Difference Approximations 378 
+7.1.1 Bias and Variance 378 
+7.1.2 Optimal Mean Square Error 381 
+7.2 Pathwise Derivative Estimates 386 
+7.2.1 Method and Examples 386 
+7.2.2 Conditions for Unbiasedness 393 
+7.2.3 Approximations and Related Methods 396 
+7.3 The Likelihood Ratio Method 401 
+7.3.1 Method and Examples 401
+7.3.2 Bias and Variance Properties 407 
+7.3.3 Gamma 411 
+7.3.4 Approximations and Related Methods 413 
+7.4 Concluding Remarks 418 
+8 Pricing American Options 421 
+8.1 Problem Formulation 421 
+8.2 Parametric Approximations 426 
+8.3 Random Thee Methods 430 
+8.3.1 High Estimator 432 
+8.3.2 Low Estimator 434 
+8.3.3 Implementation 437 
+8.4 State-Space Partitioning 441 
+8.5 Stochastic Mesh Methods 443 
+8.5.1 General Framework 443 
+8.5.2 Likelihood Ratio Weights 450 
+8.6 Regression-Based Methods and Weights 459 
+8.6.1 Approximate Continuation Values 459 
+8.6.2 Regression and Mesh Weights 465 
+8.7 Duality 470 
+8.8 Concluding Remarks 478 
+9 Applications in Risk Management 481 
+9.1 Loss Probabilities and Value-at-Risk 481 
+9.1.1 Background 481 
+9.1.2 Calculating VAR 484 
+9.2 Variance Reduction Using the Delta-Gamma Approximation 492 
+9.2.1 Control Variate 493 
+9.2.2 Importance Sampling 495 
+9.2.3 Stratified Sampling 500 
+9.3 A Heavy-Tailed Setting 506 
+9.3.1 Modeling Heavy Tails 506 
+9.3.2 Delta-Gamma Approximation 512 
+9.3.3 Variance Reduction 514 
+9.4 Credit Risk 520 
+9.4.1 Default Times and Valuation 520 
+9.4.2 Dependent Defaults 525 
+9.4.3 Portfolio Credit Risk 529 
+9.5 Concluding Remarks 535 
+A Appendix: Convergence and Confidence Intervals 539 
+A.1 Convergence Concepts 539 
+A.2 Central Limit Theorem and Confidence Intervals 541
+B Appendix: Results from Stochastic Calculus 545 
+B.1 Ito's Formula 545 
+B.2 Stochastic Differential Equations 548 
+B.3 Martingales 550 
+B.4 Change of Measure 553 
+C Appendix: The Term Structure of Interest Rates 559 
+C.1 Term Structure Terminology 559 
+C.2 Interest Rate Derivatives 564 
+References 569 
+Index 587
