@@ -37,9 +37,11 @@ python main.py
 ```
 
 A window will show:
+
 <img src="./screenshot/main_window.png" alt="alt text" style="width:50%;">
 
 You can run test:
+
 <img src="./screenshot/test.png" alt="alt text" style="width:50%;">
 
 And the output file will be saved in the same folder with the original PDF file.
