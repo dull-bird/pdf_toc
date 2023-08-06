@@ -19,15 +19,20 @@ An example:
 2 title 5 10
 ```
 
-Only three-level titles are supported.
+Note:
+- 4-level titles are supported now (I guess enough for most cases).
+- [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/document.html#Document.set_toc) has some rules of TOC:
+  - It will delete the previous TOC and create a new one.
+  - level is a integer (> 0)  which must be 1 for the first item and **at most 1 larger than the previous one**.
+  - page can be set to -1 if there is no target, or the target is external.
 
 Since sometimes the TOC file may not be fully correct (some typo when you copy the text from the pdf files), I implement a preview panel so you can preview and edit the level (can be done easily by clicking the "+1" and "-1" button), title, or the page number in the panel.
 
 The tool supports a page offset which will be added to the pages in the TOC file (an positive or negative integer, default 0).
 
 ## Requirements
-- python 3
-- PyQt5 and PyMuPDF installed
+- python 3 (>=3.8) (other versions may also work)
+- PyQt5 (>=5.9.2) and PyMuPDF (>=1.22.5) installed (other versions may also work)
 
 ## Usuage
 

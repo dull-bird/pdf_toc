@@ -4,14 +4,25 @@ from PyQt5.QtGui import QColor
 import os
 import fitz
 from PyQt5.QtGui import QIcon
+# def on_item_clicked(item):
+    # table = QApplication.instance().sender()
+    # selected_indexes = table.selectedIndexes()
+    # # 如果点击的项已经被选中，取消选中
+    # if any([idx.row() == item.row() and idx.column() == item.column() for idx in selected_indexes]):
+    #     table.clearSelection()
+    # else:
+    #     table.selectRow(item.row())
+        
 
-
-class FileDropWidget(QWidget):
+class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
+        
+        self.last_clicked_item = None
+        
         self.setAcceptDrops(True)
         self.setWindowTitle("TOC Generator for PDF")
         self.setWindowIcon(QIcon('icon.png'))
@@ -31,6 +42,26 @@ class FileDropWidget(QWidget):
         # self.tocTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         # self.tocTableWidget.verticalHeader().setVisible(False)
         self.tocTableWidget.horizontalHeader().setVisible(False)
+        self.tocTableWidget.setStyleSheet("""
+            QTableView::item:selected {
+                background-color: white;
+                color: black;
+                border: 2px solid DodgerBlue;
+            }
+            QTableView::item:selected:active {
+                background-color: white;
+                border: 2px solid DodgerBlue;
+            }
+            """)
+        self.tocTableWidget.itemClicked.connect(self.on_item_clicked)
+        # self.tocTableWidget.verticalHeader().sectionClicked.connect(self.on_item_or_header_clicked)
+        # self.tocTableWidget.horizontalHeader().sectionClicked.connect(self.on_item_or_header_clicked)
+        self.tocTableWidget.verticalHeader().setSectionsClickable(False)
+        self.tocTableWidget.horizontalHeader().setSectionsClickable(False)
+
+
+        
+        # self.tocTableWidget.itemSelectionChanged.connect(self.handle_item_selection)
 
 
         # width = self.tocTableWidget.width()
@@ -66,8 +97,37 @@ class FileDropWidget(QWidget):
         self.layout.addWidget(self.button)
         
         # self.color_levels = [Qt.red, Qt.green, Qt.blue]
-        self.color_levels = [QColor("#FFB6C1"), QColor("#ADD8E6"), QColor("#98FB98")]
+        self.color_levels = [QColor("#FFB6C1"), QColor("#ADD8E6"), QColor("#98FB98"), QColor("#D3D3D3")]
+        
+    # def on_item_or_header_clicked(self, index_or_item):
+    #     # 如果点击的是表头，取消所有选中的项目
+    #     if isinstance(index_or_item, int):
+    #         self.tocTableWidget.clearSelection()
+    #         return
 
+    #     # 处理项目点击逻辑
+    #     item = index_or_item
+    #     selected_indexes = self.tocTableWidget.selectedIndexes()
+    #     is_already_selected = any([idx.row() == item.row() and idx.column() == item.column() for idx in selected_indexes])
+    #     if is_already_selected and self.last_clicked_item == item:
+    #         self.tocTableWidget.clearSelection()
+    #         self.last_clicked_item = None
+    #     else:
+    #         self.last_clicked_item = item
+    
+    def on_item_clicked(self, item):
+        selected_indexes = self.tocTableWidget.selectedIndexes()
+        
+        # 检查此项是否在选中的列表中
+        is_already_selected = any([idx.row() == item.row() and idx.column() == item.column() for idx in selected_indexes])
+
+        # 如果此项已经被选中，并且它是上次点击的项
+        if is_already_selected and self.last_clicked_item == item:
+            self.tocTableWidget.clearSelection()
+            self.last_clicked_item = None
+        else:
+            self.last_clicked_item = item
+    
     def selectFile(self):
         file_path, _ = QFileDialog.getOpenFileName(self, 'Select PDF file', '', 'PDF files (*.pdf)')
         if file_path:
@@ -113,7 +173,7 @@ class FileDropWidget(QWidget):
         for item in self.tocTableWidget.selectedItems():
             if item.column() == 0:
                 level = int(item.text())
-                if level < 3:
+                if level < 4:
                     item.setText(str(level + 1))
                     item.setBackground(self.color_levels[level])
                 
@@ -176,10 +236,10 @@ class FileDropWidget(QWidget):
         output_file = os.path.join(output_dir, ".".join(file_name_original.split(".")[:-1]) + "_with_toc.pdf")
         try:
             self.add_toc_with_pymupdf(file_path, toc, output_file)
+            QMessageBox.information(None, "", f"TOC added successfully!\nYou can find file in {output_file}")
         except Exception as e:
             QMessageBox.critical(None, '', f'Error: {e}')
-    
-        QMessageBox.information(None, "", f"TOC added successfully!\nYou can find file in {output_file}")
+        
 
 
     def add_toc_with_pymupdf(self, pdf_path, toc, output_path):
@@ -187,7 +247,8 @@ class FileDropWidget(QWidget):
         doc.set_toc(toc)
         doc.save(output_path)
 
-app = QApplication([])
-window = FileDropWidget()
-window.show()
-app.exec_()
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MainWidget()
+    window.show()
+    app.exec_()

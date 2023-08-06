@@ -1,1 +1,4 @@
 .eggs
+test
+!test/book.pdf
+!test/toc.txt
