@@ -27,10 +27,10 @@ class MainWidget(QWidget):
         self.setWindowTitle("TOC Generator for PDF")
         self.setWindowIcon(QIcon('icon.png'))
 
-        self.fileButton = QPushButton('Select PDF file', self)
+        self.fileButton = QPushButton('Select/drop PDF file', self)
         self.fileButton.clicked.connect(self.selectFile)
 
-        self.tocFileButton = QPushButton('Select TOC file', self)
+        self.tocFileButton = QPushButton('Select/drop TOC file', self)
         self.tocFileButton.clicked.connect(self.selectTocFile)
 
         self.offsetLineEdit = QLineEdit(self)
