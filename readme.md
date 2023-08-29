@@ -34,7 +34,26 @@ The tool supports a page offset which will be added to the pages in the TOC file
 - python 3 (>=3.8) (other versions may also work)
 - PyQt5 (>=5.9.2) and PyMuPDF (>=1.22.5) installed (other versions may also work)
 
+
+## Installation
+
+- Install Python
+- Install PyQt5:
+```bash
+pip install PyQt5
+```
+or
+```bash
+conda install -c anaconda pyqt
+```
+- Install PyMuPDF:
+```bash
+python -m pip install --upgrade pymupdf
+```
+
 ## Usuage
+
+
 
 Go to the folder containing main.py, run
 ```

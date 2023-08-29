@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import QMessageBox, QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QHeaderView
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QFont
 import os
 import fitz
 from PyQt5.QtGui import QIcon
+
 # def on_item_clicked(item):
     # table = QApplication.instance().sender()
     # selected_indexes = table.selectedIndexes()
@@ -36,6 +37,11 @@ class MainWidget(QWidget):
         self.offsetLineEdit = QLineEdit(self)
 
         self.tocTableWidget = QTableWidget(0, 3, self)
+        
+        font = QFont()
+        font.setFamily("Arial, Hei, Microsoft YaHei, sans-serif")
+        self.tocTableWidget.setFont(font)
+        
         self.tocTableWidget.setHorizontalHeaderLabels(['Level', 'Title', 'Page'])
         self.tocTableWidget.verticalHeader().setDefaultSectionSize(20)
         self.tocTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -141,11 +147,13 @@ class MainWidget(QWidget):
                 toc_text = file.read()
             self.tocTableWidget.setRowCount(0)
             for line in toc_text.split('\n'):
+                if line == "":
+                    continue
+                
                 try:
                     self.tocTableWidget.insertRow(self.tocTableWidget.rowCount())
                     line_info = line.split()
-                    level, title, page = line_info[0], " ".join(line_info[1:-1]), line_info[-1]
-                    
+                    level, title, page = line_info[0], " ".join(line_info[1:-1]), line_info[-1]       
                     title = level + " " + title
                     level = str(1 + level.count("."))
                     # print(level)
@@ -227,7 +235,11 @@ class MainWidget(QWidget):
         for i in range(self.tocTableWidget.rowCount()):
             level = int(self.tocTableWidget.item(i, 0).text())
             title = self.tocTableWidget.item(i, 1).text()
-            page = int(self.tocTableWidget.item(i, 2).text()) + page_offset
+            try:
+                page = int(self.tocTableWidget.item(i, 2).text()) + page_offset
+            except Exception as e:
+                QMessageBox.critical(None, '', f'Error: invalid page number {self.tocTableWidget.item(i, 2).text()}')
+                
             toc.append([level, title, page])
         # print(toc)
         
