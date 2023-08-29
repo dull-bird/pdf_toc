@@ -52,10 +52,8 @@ python -m pip install --upgrade pymupdf
 ```
 
 ## Usuage
-
-
-
-Go to the folder containing main.py, run
+- First download the git repository (you can simply download the zip file and unzip it).
+- Go to the folder containing main.py, and run
 ```
 python main.py
 ```
