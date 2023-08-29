@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMessageBox, QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QHeaderView
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QFont
+from PyQt5.QtGui import QColor, QFont, QBrush
 import os
 import fitz
 from PyQt5.QtGui import QIcon
@@ -64,6 +64,7 @@ class MainWidget(QWidget):
         # self.tocTableWidget.horizontalHeader().sectionClicked.connect(self.on_item_or_header_clicked)
         self.tocTableWidget.verticalHeader().setSectionsClickable(False)
         self.tocTableWidget.horizontalHeader().setSectionsClickable(False)
+        self.tocTableWidget.cellChanged.connect(self.handle_cell_changed)
 
 
         
@@ -121,6 +122,23 @@ class MainWidget(QWidget):
     #     else:
     #         self.last_clicked_item = item
     
+    def handle_cell_changed(self, row, column):
+        item = self.tocTableWidget.item(row, column)
+        if item is not None:
+            new_value = item.text()
+            # print(f"Cell ({row}, {column}) changed to: {new_value}")
+            if column == 0:
+                if (not self.is_int(new_value) or not (1 <= int(new_value) <= 4)):
+                    item.setBackground(QColor("red"))
+                else:
+                    item.setBackground(self.color_levels[int(new_value)-1])
+            
+            if column == 2:
+                if not self.is_int(new_value):
+                    item.setBackground(QColor("red"))
+                else:
+                    item.setBackground(QBrush())
+    
     def on_item_clicked(self, item):
         selected_indexes = self.tocTableWidget.selectedIndexes()
         
@@ -143,39 +161,49 @@ class MainWidget(QWidget):
         file_path, _ = QFileDialog.getOpenFileName(self, 'Select TOC file', '', 'Text files (*.txt)')
         if file_path:
             self.tocFileButton.setText(file_path)
-            with open(file_path, 'r') as file:
-                toc_text = file.read()
-            self.tocTableWidget.setRowCount(0)
-            for line in toc_text.split('\n'):
-                if line == "":
-                    continue
+            self.loadTocTable(file_path)
+    
+    def loadTocTable(self, file_path):
+        with open(file_path, 'r') as file:
+            toc_text = file.read()
+        self.tocTableWidget.setRowCount(0)
+        for line in toc_text.split('\n'):
+            if line == "":
+                continue
+            try:
+                self.tocTableWidget.insertRow(self.tocTableWidget.rowCount())
+                line_info = line.split()
+                level, title, page = line_info[0], " ".join(line_info[1:-1]), line_info[-1]       
+                title = level + " " + title
+                level = str(1 + level.count("."))
+                # print(level)
+                self.tocTableWidget.horizontalHeader().setVisible(True)
+                self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 0, QTableWidgetItem(level))
+                self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 1, QTableWidgetItem(title))
+                self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 2, QTableWidgetItem(page))
                 
-                try:
-                    self.tocTableWidget.insertRow(self.tocTableWidget.rowCount())
-                    line_info = line.split()
-                    level, title, page = line_info[0], " ".join(line_info[1:-1]), line_info[-1]       
-                    title = level + " " + title
-                    level = str(1 + level.count("."))
-                    # print(level)
-                    self.tocTableWidget.horizontalHeader().setVisible(True)
-                    self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 0, QTableWidgetItem(level))
-                    self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 1, QTableWidgetItem(title))
-                    self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 2, QTableWidgetItem(page))
+                # width = self.tocTableWidget.viewport().size().width()
+                # self.tocTableWidget.setColumnWidth(0, width * 0.2)
+                self.tocTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+                # self.tocTableWidget.setColumnWidth(2, width * 0.2)
+                # self.tocTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+            except Exception as e:
+                QMessageBox.critical(None, f'Error at line {self.tocTableWidget.rowCount()}', f'Invalid format: {line}')
+                
+            # for i in range(self.tocTableWidget.rowCount()):
+                # level = int(self.tocTableWidget.item(i, 0).text())
+                # self.tocTableWidget.item(i, 0).setBackground(self.color_levels[level-1])
+                # if not self.is_int(self.tocTableWidget.item(i, 2).text()):
+                    # self.tocTableWidget.item(i, 2).setBackground(QColor("#D3D3D3"))
                     
-                    # width = self.tocTableWidget.viewport().size().width()
-                    # self.tocTableWidget.setColumnWidth(0, width * 0.2)
-                    self.tocTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-                    # self.tocTableWidget.setColumnWidth(2, width * 0.2)
-                    # self.tocTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
-                except Exception as e:
-                    QMessageBox.critical(None, f'Error at line {self.tocTableWidget.rowCount()}', f'Invalid offset {self.offsetLineEdit.text()}')
-                    
-            
-            for i in range(self.tocTableWidget.rowCount()):
-                level = int(self.tocTableWidget.item(i, 0).text())
-                self.tocTableWidget.item(i, 0).setBackground(self.color_levels[level-1])
                 
-                
+    @staticmethod 
+    def is_int(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
 
     def increaseIndent(self):
         for item in self.tocTableWidget.selectedItems():
@@ -183,7 +211,9 @@ class MainWidget(QWidget):
                 level = int(item.text())
                 if level < 4:
                     item.setText(str(level + 1))
-                    item.setBackground(self.color_levels[level])
+                    # item.setBackground(self.color_levels[level])
+                    
+    
                 
 
     def decreaseIndent(self):
@@ -192,7 +222,7 @@ class MainWidget(QWidget):
                 level = int(item.text())
                 if level > 1:
                     item.setText(str(level - 1))
-                    item.setBackground(self.color_levels[level-2])
+                    # item.setBackground(self.color_levels[level-2])
                     
 
     def dragEnterEvent(self, event):
@@ -207,15 +237,17 @@ class MainWidget(QWidget):
             self.fileButton.setText(file_path)
         elif file_path.endswith('.txt'):
             self.tocFileButton.setText(file_path)
-            with open(file_path, 'r') as file:
-                toc_text = file.read()
-            self.tocTableWidget.setRowCount(0)
-            for line in toc_text.split('\n'):
-                self.tocTableWidget.insertRow(self.tocTableWidget.rowCount())
-                level, title, page = line.split(',')
-                self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 0, QTableWidgetItem(level))
-                self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 1, QTableWidgetItem(title))
-                self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 2, QTableWidgetItem(page))
+            self.loadTocTable(file_path)
+            
+            # with open(file_path, 'r') as file:
+            #     toc_text = file.read()
+            # self.tocTableWidget.setRowCount(0)
+            # for line in toc_text.split('\n'):
+            #     self.tocTableWidget.insertRow(self.tocTableWidget.rowCount())
+            #     level, title, page = line.split(',')
+            #     self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 0, QTableWidgetItem(level))
+            #     self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 1, QTableWidgetItem(title))
+            #     self.tocTableWidget.setItem(self.tocTableWidget.rowCount() - 1, 2, QTableWidgetItem(page))
 
     def addTOC(self):
         file_path = self.fileButton.text()
@@ -234,12 +266,20 @@ class MainWidget(QWidget):
         toc = []
         for i in range(self.tocTableWidget.rowCount()):
             level = int(self.tocTableWidget.item(i, 0).text())
+            try:
+                assert 1 <= int(level) <= 4
+            except Exception as e:
+                QMessageBox.critical(None, '', f'Error: invalid level {self.tocTableWidget.item(i, 0).text()}')
+                toc = []
+                return
+            
             title = self.tocTableWidget.item(i, 1).text()
             try:
                 page = int(self.tocTableWidget.item(i, 2).text()) + page_offset
             except Exception as e:
                 QMessageBox.critical(None, '', f'Error: invalid page number {self.tocTableWidget.item(i, 2).text()}')
-                
+                toc = []
+                return
             toc.append([level, title, page])
         # print(toc)
         

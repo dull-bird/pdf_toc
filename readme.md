@@ -8,9 +8,11 @@ We often find some PDF files do not have a table of contents (TOC), which makes 
 2. a TOC file (.txt), containing the TOC information in such a format:
 
 ```
-level title page 
+level title page
 ```
+
 An example:
+
 ```
 1 title 1 1
 1.1 title 2 2
@@ -20,40 +22,55 @@ An example:
 ```
 
 Note:
+
 - 4-level titles are supported now (I guess enough for most cases).
 - [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/document.html#Document.set_toc) has some rules of TOC:
   - It will delete the previous TOC and create a new one.
-  - level is a integer (> 0)  which must be 1 for the first item and **at most 1 larger than the previous one**.
+  - level is a integer (> 0) which must be 1 for the first item and **at most 1 larger than the previous one**.
   - page can be set to -1 if there is no target, or the target is external.
 
 Since sometimes the TOC file may not be fully correct (some typo when you copy the text from the pdf files), I implement a preview panel so you can preview and edit the level (can be done easily by clicking the "+1" and "-1" button), title, or the page number in the panel.
 
 The tool supports a page offset which will be added to the pages in the TOC file (an positive or negative integer, default 0).
 
+## Faatures
+
+- An editing panel to adjust title, level and page
+- Support 4-level contents
+- Ignore empty lines in the TOC (.txt) file
+- Highlight invalid (non-integer) page numbers and levels (out of [1, 4]), and stop adding the TOC if they are detected
+
 ## Requirements
+
 - python 3 (>=3.8) (other versions may also work)
 - PyQt5 (>=5.9.2) and PyMuPDF (>=1.22.5) installed (other versions may also work)
-
 
 ## Installation
 
 - Install Python
 - Install PyQt5:
+
 ```bash
 pip install PyQt5
 ```
+
 or
+
 ```bash
 conda install -c anaconda pyqt
 ```
+
 - Install PyMuPDF:
+
 ```bash
 python -m pip install --upgrade pymupdf
 ```
 
 ## Usuage
+
 - First download the git repository (you can simply download the zip file and unzip it).
 - Go to the folder containing main.py, and run
+
 ```
 python main.py
 ```
