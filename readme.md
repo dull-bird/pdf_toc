@@ -34,7 +34,7 @@ Since sometimes the TOC file may not be fully correct (some typo when you copy t
 
 The tool supports a page offset which will be added to the pages in the TOC file (an positive or negative integer, default 0).
 
-## Faatures
+## Features
 
 - An editing panel to adjust title, level and page
 - Support any level contents
