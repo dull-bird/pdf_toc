@@ -1,5 +1,6 @@
 # A PDF TOC Generator
 
+English | [中文版](readme_cn.md)
 ## Introduction
 
 We often find some PDF files do not have a table of contents (TOC), which makes it inconvenient for us to read the file, especially for books. I build this tool to help you to generate one TOC. To do this, you need:
@@ -23,7 +24,7 @@ An example:
 
 Note:
 
-- 4-level titles are supported now (I guess enough for most cases).
+- Any level titles are supported now.
 - [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/document.html#Document.set_toc) has some rules of TOC:
   - It will delete the previous TOC and create a new one.
   - level is a integer (> 0) which must be 1 for the first item and **at most 1 larger than the previous one**.
@@ -36,9 +37,9 @@ The tool supports a page offset which will be added to the pages in the TOC file
 ## Faatures
 
 - An editing panel to adjust title, level and page
-- Support 4-level contents
+- Support any level contents
 - Ignore empty lines in the TOC (.txt) file
-- Highlight invalid (non-integer) page numbers and levels (out of [1, 4]), and stop adding the TOC if they are detected
+- Highlight (with red background) invalid (non-integer) page numbers and invalid levels (non-integer or smaller than 1), and stop adding the TOC if they are detected
 
 ## Requirements
 

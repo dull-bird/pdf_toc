@@ -1,3 +1,4 @@
+import math
 from PyQt5.QtWidgets import QMessageBox, QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QHeaderView
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QBrush
@@ -104,7 +105,7 @@ class MainWidget(QWidget):
         self.layout.addWidget(self.button)
         
         # self.color_levels = [Qt.red, Qt.green, Qt.blue]
-        self.color_levels = [QColor("#FFB6C1"), QColor("#ADD8E6"), QColor("#98FB98"), QColor("#D3D3D3")]
+        self.color_levels = [QColor("#FFB6C1"), QColor("#ADD8E6"), QColor("#98FB98"), QColor("#D3D3D3"), QColor("#808080")]
         
     # def on_item_or_header_clicked(self, index_or_item):
     #     # 如果点击的是表头，取消所有选中的项目
@@ -128,10 +129,10 @@ class MainWidget(QWidget):
             new_value = item.text()
             # print(f"Cell ({row}, {column}) changed to: {new_value}")
             if column == 0:
-                if (not self.is_int(new_value) or not (1 <= int(new_value) <= 4)):
+                if (not self.is_int(new_value) or not (1 <= int(new_value) <= math.inf)):
                     item.setBackground(QColor("red"))
                 else:
-                    item.setBackground(self.color_levels[int(new_value)-1])
+                    item.setBackground(self.color_levels[min(int(new_value)-1, len(self.color_levels)-1)])
             
             if column == 2:
                 if not self.is_int(new_value):
@@ -158,6 +159,17 @@ class MainWidget(QWidget):
             self.fileButton.setText(file_path)
 
     def selectTocFile(self):
+        """
+        Open a file dialog to select a TOC file.
+
+        This function opens a file dialog to allow the user to select a TOC (Table of Contents) file. The selected file path is then displayed on a button in the UI. Additionally, the function calls the `loadTocTable` method to load and display the contents of the selected TOC file in a table.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
         file_path, _ = QFileDialog.getOpenFileName(self, 'Select TOC file', '', 'Text files (*.txt)')
         if file_path:
             self.tocFileButton.setText(file_path)
@@ -209,7 +221,7 @@ class MainWidget(QWidget):
         for item in self.tocTableWidget.selectedItems():
             if item.column() == 0:
                 level = int(item.text())
-                if level < 4:
+                if level < math.inf:
                     item.setText(str(level + 1))
                     # item.setBackground(self.color_levels[level])
                     
@@ -267,7 +279,7 @@ class MainWidget(QWidget):
         for i in range(self.tocTableWidget.rowCount()):
             level = int(self.tocTableWidget.item(i, 0).text())
             try:
-                assert 1 <= int(level) <= 4
+                assert 1 <= int(level) <= math.inf
             except Exception as e:
                 QMessageBox.critical(None, '', f'Error: invalid level {self.tocTableWidget.item(i, 0).text()}')
                 toc = []
