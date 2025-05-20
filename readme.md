@@ -49,23 +49,22 @@ The tool supports a page offset which will be added to the pages in the TOC file
 ## Installation
 
 - Install Python
-- Install PyQt5:
+- Create a virtual environment and activate it
 
-```bash
-pip install PyQt5
-```
+    ```powershell
+    python -m venv .venv
 
-or
+    .\.venv\Scripts\Activate.ps1 # Windows Powershell
+    # source .venv/bin/activate # Linux
 
-```bash
-conda install -c anaconda pyqt
-```
+    ```
 
-- Install PyMuPDF:
+- Install Dependencies
 
-```bash
-python -m pip install --upgrade pymupdf
-```
+    ```powershell
+    pip install -r requirements.txt
+    ```
+
 
 ## Usuage
 

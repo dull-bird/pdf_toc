@@ -43,29 +43,38 @@
 - 高亮（红色背景）显示无效（非整数）的页码和无效（非整数或小于 1）的级别，并在检测到它们时停止添加 TOC
 
 ## 安装要求
+
 Python 3（>=3.8）（其他版本可能也可以）
 安装 PyQt5（>=5.9.2）和 PyMuPDF（>=1.22.5）（其他版本可能也可以）
 
 ## 安装
-安装 Python
-安装 PyQt5：
-```
-pip install PyQt5
-```
-或者
-```
-conda install -c anaconda pyqt
-```
-安装 PyMuPDF：
-```
-python -m pip install --upgrade pymupdf
-```
+
+- 安装 Python
+- 创建一个虚拟环境 (venv) 并激活
+
+  ```powershell
+  python -m venv .venv
+
+  .\.venv\Scripts\Activate.ps1 # Windows Powershell
+  # source .venv/bin/activate # Linux
+
+  ```
+
+- 安装依赖项
+
+  ```powershell
+  pip install -r requirements.txt
+  ```
+
 ## 使用
+
 - 首先下载 git 仓库（您可以简单地下载 zip 文件并解压缩）。
 - 进入包含 main.py 的文件夹，并运行以下命令：
+
 ```
 python main.py
 ```
+
 将显示一个窗口：
 
 <img src="./screenshot/main_window.png" alt="alt text" style="width:50%;">

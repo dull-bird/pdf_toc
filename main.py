@@ -6,16 +6,6 @@ import os
 import fitz
 from PyQt5.QtGui import QIcon
 
-# def on_item_clicked(item):
-    # table = QApplication.instance().sender()
-    # selected_indexes = table.selectedIndexes()
-    # # 如果点击的项已经被选中，取消选中
-    # if any([idx.row() == item.row() and idx.column() == item.column() for idx in selected_indexes]):
-    #     table.clearSelection()
-    # else:
-    #     table.selectRow(item.row())
-        
-
 class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -106,22 +96,6 @@ class MainWidget(QWidget):
         
         # self.color_levels = [Qt.red, Qt.green, Qt.blue]
         self.color_levels = [QColor("#FFB6C1"), QColor("#ADD8E6"), QColor("#98FB98"), QColor("#D3D3D3"), QColor("#808080")]
-        
-    # def on_item_or_header_clicked(self, index_or_item):
-    #     # 如果点击的是表头，取消所有选中的项目
-    #     if isinstance(index_or_item, int):
-    #         self.tocTableWidget.clearSelection()
-    #         return
-
-    #     # 处理项目点击逻辑
-    #     item = index_or_item
-    #     selected_indexes = self.tocTableWidget.selectedIndexes()
-    #     is_already_selected = any([idx.row() == item.row() and idx.column() == item.column() for idx in selected_indexes])
-    #     if is_already_selected and self.last_clicked_item == item:
-    #         self.tocTableWidget.clearSelection()
-    #         self.last_clicked_item = None
-    #     else:
-    #         self.last_clicked_item = item
     
     def handle_cell_changed(self, row, column):
         item = self.tocTableWidget.item(row, column)
