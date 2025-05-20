@@ -1,4 +1,4 @@
-# A PDF TOC Generator
+# A PDF Table of Contents Generator
 
 English | [中文版](readme_cn.md)
 ## Introduction
